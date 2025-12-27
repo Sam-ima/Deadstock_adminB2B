@@ -1,82 +1,62 @@
+import React, { lazy, Suspense } from "react";
+import "./global.css";
+
 import {
-  BrowserRouter as Router,
-  Routes,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
   Route,
-  Navigate,
 } from "react-router-dom";
 
-import DashboardLayoutBasic from "./components/drawer/dashboardMain";
-import { SearchProvider } from "./context/searchbar/searchContext";
-import { SnackbarProvider } from "./context/snackbar/snackbarContext";
-// import DepartmentsPage from "./pages/departmentPage";
-// import PrimaryServiceIndex from "./pages/servicesPage/primaryServices";
-// import ConsultationServiceIndex from "./pages/servicesPage/consultationService";
-// import SocialServiceIndex from "./pages/servicesPage/socialService";
-// import AuthoritiesIndex from "./pages/authorities";
-// import AnnouncementIndex from "./pages/announcements";
-// import PublicationsIndex from "./pages/publications";
-// import ResearchIndex from "./pages/research";
-// import NewsLetterIndex from "./pages/newsletter";
-// import GalleryIndex from "./pages/gallery";
-// import CitizenCharterIndex from "./pages/citizenCharter";
-// import { SnackbarProvider } from "./context/snackbarContext";
-// import AdminLogin from "./components/login/authContext";
-// import ProtectedRoute from "./components/login/protectedRoute";
+import { ToastContainer, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+/* Lazy Loaded Components */
+import LoginForm from "./dashboard/loginForm";
+import AdminDashboardPage from "./pages/adminDashboardPage"
+// const OwnerTable = lazy(() => import("./pages/owner/owner/OwnerTable"));
+// const CustomerTable = lazy(() => import("./pages/customer/CustomerTable"));
+// const BookingTable = lazy(() => import("./pages/booking/BookingTable"));
+// const PickUpTable = lazy(() => import("./pages/pickUp/PickUpTable"));
+// const HireDriverTable = lazy(() => import("./pages/hireDriver/hireDriverTable"));
+// const ReviewsTable = lazy(() => import("./pages/review/ReviewTable"));
+// const RedeemSchemeTable = lazy(() => import("./pages/redeemScheme/RedeemSchemeTable"));
 
 function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/dashboard" element={<AdminDashboardPage />} />
+        {/* <Route path="/owner" element={<OwnerTable />} />
+        <Route path="/customer" element={<CustomerTable />} />
+        <Route path="/booking" element={<BookingTable />} />
+        <Route path="/pickup" element={<PickUpTable />} />
+        <Route path="/hireDriver" element={<HireDriverTable />} />
+        <Route path="/redeemScheme" element={<RedeemSchemeTable />} />
+        <Route path="/reviews" element={<ReviewsTable />} /> */}
+      </Route>
+    )
+  );
+
   return (
-    <>
-      <SearchProvider>
-        <SnackbarProvider>
-          <Router>
-            <Routes>
-              {/* Public routes */}
-              {/* <Route path="/login" element={<AdminLogin />} /> */}
+    <Suspense fallback={<div className="loading">Loading...</div>}>
+      <RouterProvider router={router} />
 
-              {/* Protected routes */}
-              <Route
-                path="/dashboard"
-                element={
-                  // <ProtectedRoute>
-                    <DashboardLayoutBasic />
-                  // </ProtectedRoute>
-                }
-              >
-                {/* Nested routes for dashboard layout */}
-                {/* <Route index element={<Navigate to="/dashboard" replace />} /> */}
-                
-                {/* <Route path="departments" element={<DepartmentsPage />} /> */}
-                {/* <Route
-                  path="services/primary"
-                  element={<PrimaryServiceIndex />}
-                />
-                <Route
-                  path="services/consultation"
-                  element={<ConsultationServiceIndex />}
-                />
-                <Route
-                  path="services/social"
-                  element={<SocialServiceIndex />}
-                />
-                <Route path="authorities" element={<AuthoritiesIndex />} />
-                <Route path="publications" element={<PublicationsIndex />} />
-                <Route path="announcements" element={<AnnouncementIndex />} />
-                <Route path="research" element={<ResearchIndex />} />
-                <Route path="newsletter" element={<NewsLetterIndex />} />
-                <Route path="gallery" element={<GalleryIndex />} />
-                <Route
-                  path="citizenCharter"
-                  element={<CitizenCharterIndex />}
-                /> */}
-              </Route>
-
-              {/* Redirect unknown routes to login */}
-              {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-            </Routes>
-          </Router>
-        </SnackbarProvider>
-      </SearchProvider>
-    </>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Flip}
+      />
+    </Suspense>
   );
 }
 
