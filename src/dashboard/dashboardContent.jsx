@@ -85,7 +85,7 @@ const DashboardContent = () => {
           fontWeight={600}
           color="primary.main"
         >
-          B2C Admin Dashboard
+          B2B Admin Dashboard
         </Typography>
 
         <Typography
